@@ -40,6 +40,7 @@ from emencia.django.newsletter.utils.newsletter import body_insertion
 from emencia.django.newsletter.settings import TRACKING_LINKS
 from emencia.django.newsletter.settings import TRACKING_IMAGE
 from emencia.django.newsletter.settings import TRACKING_IMAGE_FORMAT
+from emencia.django.newsletter.settings import LINK_SITE
 from emencia.django.newsletter.settings import UNIQUE_KEY_LENGTH
 from emencia.django.newsletter.settings import UNIQUE_KEY_CHAR_SET
 from emencia.django.newsletter.settings import INCLUDE_UNSUBSCRIPTION
@@ -165,8 +166,9 @@ class NewsLetterSender(object):
         content = self.newsletter_template.render(context)
         if TRACKING_LINKS:
             content = track_links(content, context)
-        link_site = render_to_string('newsletter/newsletter_link_site.html', context)
-        content = body_insertion(content, link_site)
+        if LINK_SITE:
+            link_site = render_to_string('newsletter/newsletter_link_site.html', context)
+            content = body_insertion(content, link_site)
 
         if INCLUDE_UNSUBSCRIPTION:
             unsubscription = render_to_string('newsletter/newsletter_link_unsubscribe.html', context)
