@@ -218,10 +218,10 @@ class Newsletter(models.Model):
     title = models.CharField(_('title'), max_length=255,
                              help_text=_('You can use the "{{ UNIQUE_KEY }}" variable ' \
                                          'for unique identifier within the newsletter\'s title.'))
-    content = models.TextField(_('content'), help_text=_('Or paste an URL.'),
+    content = models.TextField(verbose_name=_('content'), help_text=_('Or paste an URL.'),
                                default=_('<body>\n<!-- Edit your newsletter here -->\n</body>'))
 
-    products = models.ManyToManyField(Product, blank=True, null=True)
+    products = models.ManyToManyField(Product, blank=True, null=True, verbose_name=_('products'))
     mailing_list = models.ForeignKey(MailingList, verbose_name=_('mailing list'))
     test_contacts = models.ManyToManyField(Contact, verbose_name=_('test contacts'),
                                            blank=True, null=True)
