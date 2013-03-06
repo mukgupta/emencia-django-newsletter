@@ -21,6 +21,8 @@ from emencia.django.newsletter.settings import DEFAULT_HEADER_REPLY
 from emencia.django.newsletter.settings import DEFAULT_HEADER_SENDER
 from emencia.django.newsletter.utils.vcard import vcard_contact_export
 
+from product.models import Product
+
 # Patch for Python < 2.6
 try:
     getattr(SMTP, 'ehlo_or_helo_if_needed')
@@ -219,6 +221,7 @@ class Newsletter(models.Model):
     content = models.TextField(_('content'), help_text=_('Or paste an URL.'),
                                default=_('<body>\n<!-- Edit your newsletter here -->\n</body>'))
 
+    products = models.ManyToManyField(Product, blank=True, null=True)
     mailing_list = models.ForeignKey(MailingList, verbose_name=_('mailing list'))
     test_contacts = models.ManyToManyField(Contact, verbose_name=_('test contacts'),
                                            blank=True, null=True)
