@@ -1,0 +1,17 @@
+{% load i18n %}
+{% load thumbnail %}
+{% if products %}
+<table>
+    <thead>
+        <tr colspan="{{ products.count }}"><td>Produits</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+            {% for product in products %}
+            {% thumbnail product.main_image.picture 85x85 as image %}
+            <td><p><a href="http://{{ domain }}{{ product.get_absolute_url }}" target="_blank">{{product.translated_name}}</a></p><a href="http://{{ domain }}{{ product.get_absolute_url }}" target="_blank"><img src="http://{{ domain }}{{ image }}" width="85" height="85" alt="{{product.translated_name}}"/></a></td>
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+{% endif %}

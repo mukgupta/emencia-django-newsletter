@@ -37,6 +37,7 @@ from emencia.django.newsletter.models import ContactMailingStatus
 from emencia.django.newsletter.utils.tokens import tokenize
 from emencia.django.newsletter.utils.newsletter import track_links
 from emencia.django.newsletter.utils.newsletter import body_insertion
+from emencia.django.newsletter.utils.newsletter import products_insertion
 from emencia.django.newsletter.settings import TRACKING_LINKS
 from emencia.django.newsletter.settings import TRACKING_IMAGE
 from emencia.django.newsletter.settings import TRACKING_IMAGE_FORMAT
@@ -161,6 +162,7 @@ class NewsLetterSender(object):
         context = Context({'contact': contact,
                            'domain': Site.objects.get_current().domain,
                            'newsletter': self.newsletter,
+                           'products' : self.newsletter.products.all(),
                            'tracking_image_format': TRACKING_IMAGE_FORMAT,
                            'uidb36': uidb36, 'token': token})
         content = self.newsletter_template.render(context)
@@ -169,13 +171,16 @@ class NewsLetterSender(object):
         if LINK_SITE:
             link_site = render_to_string('newsletter/newsletter_link_site.html', context)
             content = body_insertion(content, link_site)
-
         if INCLUDE_UNSUBSCRIPTION:
             unsubscription = render_to_string('newsletter/newsletter_link_unsubscribe.html', context)
             content = body_insertion(content, unsubscription, end=True)
         if TRACKING_IMAGE:
             image_tracking = render_to_string('newsletter/newsletter_image_tracking.html', context)
             content = body_insertion(content, image_tracking, end=True)
+
+        products = render_to_string('newsletter/newsletter_products.html', context)
+        content = products_insertion(content, products)
+
         return smart_unicode(content)
 
     def update_newsletter_status(self):

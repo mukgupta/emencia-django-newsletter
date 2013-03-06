@@ -26,6 +26,20 @@ def body_insertion(content, insertion, end=False):
         return soup.renderContents()
 
 
+def products_insertion(content, insertion):
+    """insert satchmo products into <div id="products"></div>"""
+    insertion = BeautifulSoup(insertion)
+    soup = BeautifulSoup(content)
+
+    if soup('div', id='products'):
+        soup('div', id='products')[0].contents[0].replaceWith(insertion)
+
+    if USE_PRETTIFY:
+        return soup.prettify()
+    else:
+        return soup.renderContents()
+
+
 def track_links(content, context):
     """Convert all links in the template for the user
     to track his navigation"""
