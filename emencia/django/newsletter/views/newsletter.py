@@ -10,7 +10,7 @@ from django.template.loader import render_to_string as render_file
 from emencia.django.newsletter.models import Newsletter
 from emencia.django.newsletter.models import ContactMailingStatus
 from emencia.django.newsletter.utils import render_string
-from emencia.django.newsletter.utils.newsletter import body_insertion
+from emencia.django.newsletter.utils.newsletter import body_insertion, products_insertion
 from emencia.django.newsletter.utils.newsletter import track_links
 from emencia.django.newsletter.utils.tokens import untokenize
 from emencia.django.newsletter.settings import TRACKING_LINKS
@@ -20,7 +20,9 @@ def render_newsletter(request, slug, context):
     """Return a newsletter in HTML format"""
     newsletter = get_object_or_404(Newsletter, slug=slug)
     context.update({'newsletter': newsletter,
-                    'domain': Site.objects.get_current().domain})
+                    'domain': Site.objects.get_current().domain,
+                    'products': newsletter.products.all(),
+                    })
 
     content = render_string(newsletter.content, context)
     title = render_string(newsletter.title, context)
@@ -28,6 +30,8 @@ def render_newsletter(request, slug, context):
         content = track_links(content, context)
     unsubscription = render_file('newsletter/newsletter_link_unsubscribe.html', context)
     content = body_insertion(content, unsubscription, end=True)
+    products = render_file('newsletter/newsletter_products.html', context)
+    content = products_insertion(content, products)    
 
     return render_to_response('newsletter/newsletter_detail.html',
                               {'content': content,
