@@ -9,6 +9,7 @@ from emencia.django.newsletter.models import SMTPServer
 from emencia.django.newsletter.models import Newsletter
 from emencia.django.newsletter.models import MailingList
 from emencia.django.newsletter.models import ContactMailingStatus
+from emencia.django.newsletter.models import AdditionalContent
 
 from emencia.django.newsletter.settings import USE_WORKGROUPS
 from emencia.django.newsletter.admin.contact import ContactAdmin
@@ -22,6 +23,7 @@ admin.site.register(Contact, ContactAdmin)
 admin.site.register(SMTPServer, SMTPServerAdmin)
 admin.site.register(Newsletter, NewsletterAdmin)
 admin.site.register(MailingList, MailingListAdmin)
+admin.site.register(AdditionalContent)
 
 if USE_WORKGROUPS:
     admin.site.register(WorkGroup, WorkGroupAdmin)

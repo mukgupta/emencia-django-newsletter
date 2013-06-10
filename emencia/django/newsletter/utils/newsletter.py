@@ -26,13 +26,13 @@ def body_insertion(content, insertion, end=False):
         return soup.renderContents()
 
 
-def products_insertion(content, insertion):
-    """insert satchmo products into <div id="products"></div>"""
+def additional_insertion(content, insertion):
+    """insert additional content into <div id="additional-content"></div>"""
     insertion = BeautifulSoup(insertion)
     soup = BeautifulSoup(content)
 
-    if soup('div', id='products'):
-        soup('div', id='products')[0].contents[0].replaceWith(insertion)
+    if soup('div', id='additional-content'):
+        soup('div', id='additional-content')[0].contents[0].replaceWith(insertion)
 
     if USE_PRETTIFY:
         return soup.prettify()

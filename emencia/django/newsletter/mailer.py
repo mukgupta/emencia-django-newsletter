@@ -37,7 +37,7 @@ from emencia.django.newsletter.models import ContactMailingStatus
 from emencia.django.newsletter.utils.tokens import tokenize
 from emencia.django.newsletter.utils.newsletter import track_links
 from emencia.django.newsletter.utils.newsletter import body_insertion
-from emencia.django.newsletter.utils.newsletter import products_insertion
+from emencia.django.newsletter.utils.newsletter import additional_insertion
 from emencia.django.newsletter.settings import TRACKING_LINKS
 from emencia.django.newsletter.settings import TRACKING_IMAGE
 from emencia.django.newsletter.settings import TRACKING_IMAGE_FORMAT
@@ -162,7 +162,7 @@ class NewsLetterSender(object):
         context = Context({'contact': contact,
                            'domain': Site.objects.get_current().domain,
                            'newsletter': self.newsletter,
-                           'products' : self.newsletter.products.all(),
+                           'additional_objects' : self.newsletter.additional_objects.all(),
                            'tracking_image_format': TRACKING_IMAGE_FORMAT,
                            'uidb36': uidb36, 'token': token})
         content = self.newsletter_template.render(context)
@@ -178,8 +178,8 @@ class NewsLetterSender(object):
             image_tracking = render_to_string('newsletter/newsletter_image_tracking.html', context)
             content = body_insertion(content, image_tracking, end=True)
 
-        products = render_to_string('newsletter/newsletter_products.html', context)
-        content = products_insertion(content, products)
+        additional_content = render_to_string('newsletter/newsletter_additional_content.html', context)
+        content = additional_insertion(content, additional_content)
 
         return smart_unicode(content)
 
@@ -232,6 +232,7 @@ class NewsLetterSender(object):
         else:
             # signal error
             print >>sys.stderr, 'smtp connection raises %s' % exception
+            raise exception
             status = ContactMailingStatus.ERROR
 
         ContactMailingStatus.objects.create(
@@ -272,6 +273,7 @@ class Mailer(NewsLetterSender):
                                    message.as_string())
             except Exception, e:
                 exception = e
+                raise exception
             else:
                 exception = None
 

@@ -39,3 +39,5 @@ RESTART_CONNECTION_BETWEEN_SENDING = getattr(
     settings, 'NEWSLETTER_RESTART_CONNECTION_BETWEEN_SENDING', False)
 
 BASE_PATH = getattr(settings, 'NEWSLETTER_BASE_PATH', 'uploads/newsletter')
+
+ADDITIONAL_OBJECTS_MODEL = getattr(settings, 'NEWSLETTER_ADDITIONAL_OBJECTS_MODEL', 'newsletter.AdditionalContent')

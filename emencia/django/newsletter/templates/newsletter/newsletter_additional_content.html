@@ -1,0 +1,8 @@
+{% load i18n %}
+{% load thumbnail %}
+
+{% if additional_objects %}
+    {% for object in additional_objects %}
+        {{object.label}} :: {{object.content}}
+    {% endfor %}
+{% endif %}

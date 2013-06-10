@@ -19,9 +19,8 @@ from emencia.django.newsletter.settings import BASE_PATH
 from emencia.django.newsletter.settings import MAILER_HARD_LIMIT
 from emencia.django.newsletter.settings import DEFAULT_HEADER_REPLY
 from emencia.django.newsletter.settings import DEFAULT_HEADER_SENDER
+from emencia.django.newsletter.settings import ADDITIONAL_OBJECTS_MODEL
 from emencia.django.newsletter.utils.vcard import vcard_contact_export
-
-from product.models import Product
 
 # Patch for Python < 2.6
 try:
@@ -221,7 +220,7 @@ class Newsletter(models.Model):
     content = models.TextField(verbose_name=_('content'), help_text=_('Or paste an URL.'),
                                default=_('<body>\n<!-- Edit your newsletter here -->\n</body>'))
 
-    products = models.ManyToManyField(Product, blank=True, null=True, verbose_name=_('products'))
+    additional_objects = models.ManyToManyField(ADDITIONAL_OBJECTS_MODEL, blank=True, null=True, verbose_name=_('additional objects'))
     mailing_list = models.ForeignKey(MailingList, verbose_name=_('mailing list'))
     test_contacts = models.ManyToManyField(Contact, verbose_name=_('test contacts'),
                                            blank=True, null=True)
@@ -264,6 +263,15 @@ class Newsletter(models.Model):
         verbose_name = _('newsletter')
         verbose_name_plural = _('newsletters')
         permissions = (('can_change_status', 'Can change status'),)
+
+
+class AdditionalContent(models.Model):
+    """Content that can be added in a newsletter"""
+    label = models.CharField(_('label'), max_length=255)
+    content = models.TextField(_('content'))
+
+    def __unicode__(self):
+        return self.label
 
 
 class Link(models.Model):
