@@ -273,7 +273,6 @@ class Mailer(NewsLetterSender):
                                    message.as_string())
             except Exception, e:
                 exception = e
-                raise exception
             else:
                 exception = None
 
