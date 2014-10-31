@@ -10,8 +10,8 @@ BASE64_IMAGES = {
 
 USE_WORKGROUPS = getattr(settings, 'NEWSLETTER_USE_WORKGROUPS', False)
 USE_UTM_TAGS = getattr(settings, 'NEWSLETTER_USE_UTM_TAGS', True)
-USE_TINYMCE = getattr(settings, 'NEWSLETTER_USE_TINYMCE',
-                      'tinymce' in settings.INSTALLED_APPS)
+USE_CKEDITOR = getattr(settings, 'NEWSLETTER_USE_CKEDITOR', 'ckeditor' in settings.INSTALLED_APPS)
+USE_TINYMCE = getattr(settings, 'NEWSLETTER_USE_TINYMCE', 'tinymce' in settings.INSTALLED_APPS)
 
 USE_PRETTIFY = getattr(settings, 'NEWSLETTER_USE_PRETTIFY', True)
 
