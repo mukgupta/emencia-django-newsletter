@@ -139,7 +139,7 @@ class Contact(models.Model):
 
     def mail_format(self):
         if self.first_name and self.last_name:
-            return '%s %s <%s>' % (self.last_name, self.first_name, self.email)
+            return u'%s %s <%s>' % (self.last_name, self.first_name, self.email)
         return self.email
     mail_format.short_description = _('mail format')
 
@@ -150,11 +150,11 @@ class Contact(models.Model):
 
     def __unicode__(self):
         if self.first_name and self.last_name:
-            contact_name = '%s %s' % (self.last_name, self.first_name)
+            contact_name = u'%s %s' % (self.last_name, self.first_name)
         else:
             contact_name = self.email
         if self.tags:
-            return '%s | %s' % (contact_name, self.tags)
+            return u'%s | %s' % (contact_name, self.tags)
         return contact_name
 
     class Meta:
